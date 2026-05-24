@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GST Calculator</title>
+</head>
+
+<body bgcolor="lightblue">
+
+<center>
+
+<h2>GST Bill Calculator</h2>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<label>Amount:</label><br>
+
+<input type="text" name="amount"><br><br>
+
+<label>GST Percentage:</label><br>
+
+<input type="text" name="gst"><br><br>
+
+<button type="submit">
+Calculate
+</button>
+
+</form>
+
+{% if total %}
+
+<h3>GST Amount : {{ tax }}</h3>
+
+<h3>Total Bill : {{ total }}</h3>
+
+{% endif %}
+
+</center>
+
+</body>
+</html>

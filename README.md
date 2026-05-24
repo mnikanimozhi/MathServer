@@ -1,5 +1,5 @@
 # Ex.04 Design a Website for Server Side Processing
-## Date:
+## Date:24-05-2026
 
 ## AIM:
 To create a web page to calculate total bill amount with GST from price and GST percentage using server-side scripts.
@@ -44,12 +44,122 @@ Publish the website in Localhost.
 
 ## PROGRAM:
 
+MATH.HTML:
+```
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GST Calculator</title>
+</head>
+
+<body bgcolor="lightblue">
+
+<center>
+
+<h2>GST Bill Calculator</h2>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<label>Amount:</label><br>
+
+<input type="text" name="amount"><br><br>
+
+<label>GST Percentage:</label><br>
+
+<input type="text" name="gst"><br><br>
+
+<button type="submit">
+Calculate
+</button>
+
+</form>
+
+{% if total %}
+
+<h3>GST Amount : {{ tax }}</h3>
+
+<h3>Total Bill : {{ total }}</h3>
+
+{% endif %}
+
+</center>
+
+</body>
+</html>
+
+```
+
+views.py:
+
+```
+
+from django.shortcuts import render
+
+def calculate_gst(request):
+
+    tax = None
+    total = None
+
+    if request.method == "POST":
+
+        amount = float(request.POST.get("amount"))
+        gst = float(request.POST.get("gst"))
+
+        tax = (amount * gst) / 100
+
+        total = amount + tax
+
+        print("Amount:", amount)
+        print("GST:", gst)
+        print("GST Amount:", tax)
+        print("Total:", total)
+
+    return render(
+        request,
+        "mathapp/math.html",
+        {
+            "tax": tax,
+            "total": total
+        }
+    )
+
+```
+
+urls.py:
+
+```
+
+from django.contrib import admin
+from django.urls import path
+from mathapp import views
+
+urlpatterns = [
+
+    path(
+        'admin/',
+        admin.site.urls
+    ),
+
+    path(
+        '',
+        views.calculate_gst,
+        name='calculate_gst'
+    ),
+
+]
+
+```
 
 ## OUTPUT - SERVER SIDE:
 
+![alt text](serverside.png)
 
 ## OUTPUT - WEBPAGE:
 
+![alt text](website.png)
 
 ## RESULT:
 The a web page to calculate total bill amount with GST from price and GST percentage using server-side scripts is created successfully.
